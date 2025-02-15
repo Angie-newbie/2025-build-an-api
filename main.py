@@ -5,7 +5,7 @@ import os
 def create_app():
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL')
 
 
     db.init_app(app)
