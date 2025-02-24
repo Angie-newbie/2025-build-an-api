@@ -1,6 +1,7 @@
 from flask import Blueprint
 from init import db
 from models.students import Student
+from models.teachers import Teacher
 
 db_bp = Blueprint('db', __name__)
 
@@ -23,6 +24,21 @@ def seed_tables():
             email = 'john.smith@outlook.com'
         )
     ]
+
+    teachers = [
+        Teacher(
+            name = 'Mr. Robot',
+            department = 'Training and Development',
+            address = 'Brisbane'
+        ),
+        Teacher(
+            name = 'Alex',
+            department = 'Training and Development',
+            address = 'Sydney'
+        )
+    ]
+
     db.session.add_all(students)
+    db.session.add_all(teachers)
     db.session.commit()
     print('table seeded')

@@ -9,7 +9,7 @@ students_bp = Blueprint('students', __name__)
 # Read all - GET /students
 @students_bp.route('/students')
 def get_all_students():
-    stmt = db.select(Student).order_by(Student.name.dec())
+    stmt = db.select(Student).order_by(Student.name.dsec())
     students = db.session.scalars(stmt)
     return many_students.dump(students)
 
@@ -55,7 +55,7 @@ def create_student():
     
 
 # Update - PUT / students / <int:id>
-@students_bp.route('/studentd/<int:student_id>', methods = ['PUT', 'PATCH'])
+@students_bp.route('/students/<int:student_id>', methods = ['PUT', 'PATCH'])
 def update_student(student_id):
     try:
         
@@ -67,11 +67,13 @@ def update_student(student_id):
             data = student_without_id.load(request.json)
             # update the attribute of the student with the incoming data
             student.name = data.get('name') or student.name
-            email = data.get('email') or student.email
-            address = data.get('address') or student.address
+            student.email = data.get('email') or student.email
+            student.address = data.get('address') or student.address
 
             db.session.commit()
             return one_student.dump(student)
+        else:
+            return {'error': f'Student with id {student_id} does not exist'}, 404 
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
             return{"error": "email address already in use"}, 409
