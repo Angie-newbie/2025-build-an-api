@@ -45,7 +45,7 @@ def create_teacher():
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION: 
             # unique violation
-            return {"error": "department address already in use"}, 409
+            return {"error": "department already in use"}, 409
         elif err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
             return{"error": "Field is required"}, 400
         else:
@@ -76,7 +76,7 @@ def update_teacher(teacher_id):
             return {'error': f'Teacher with id {teacher_id} does not exist'}, 404 
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return{"error": "department address already in use"}, 409
+            return{"error": "department already in use"}, 409
         else:
             return{"error": err._message()}, 400
 
