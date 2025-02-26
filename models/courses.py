@@ -14,7 +14,7 @@ class Course(db.Model):
     end_date = db.Column(db.Date)
 
     teacher_id = db.Column(db.Integer, db.ForeignKey('academy.teachers.id'))
-    teacher_info = db.relationship('Teacher')
+    teacher_info = db.relationship('Teacher', back_populates = 'courses')
                         
 class CourseSchema(ma.Schema):
     teacher_info = fields.Nested('TeacherSchema')
@@ -24,7 +24,7 @@ class CourseSchema(ma.Schema):
         fields = ('id', 'name', 'start_date', 'end_date', 'teacher_id', 'teacher_info')
 
 one_course = CourseSchema()
-many_courses = CourseSchema(many = True)
+many_courses = CourseSchema(many = True, exclude=['teacher_info'])
 
 course_without_id = CourseSchema(exclude=['id'])
 
