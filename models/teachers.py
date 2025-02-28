@@ -13,7 +13,7 @@ class Teacher(db.Model):
     address = db.Column(db.String(250))
 
     
-    teacher_courses = db.relationship('Course')
+    teacher_courses = db.relationship('Course', back_populates= 'teacher_info')
                         
 class TeacherSchema(ma.Schema):
     teacher_courses = fields.Nested('CourseSchema', many=True, exclude=['teacher_info'])
