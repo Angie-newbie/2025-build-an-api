@@ -1,5 +1,8 @@
 from init import db, ma
 from marshmallow_sqlalchemy import fields
+from marshmallow.fields import String
+from marshmallow.validate import Length, Regexp, And
+
 
 
 class Course(db.Model):
@@ -17,6 +20,12 @@ class Course(db.Model):
     teacher_info = db.relationship('Teacher', back_populates = 'teacher_courses')
                         
 class CourseSchema(ma.Schema):
+    name = String(required=True, validate=And(
+        Length(min=5, error="Name must be at least 5 characters"),
+        Regexp('^[A-Za-z0-9 ()]$', error='Only Letters, numbers, spaces and parentheses allowed')
+        
+        ))
+
     teacher_info = fields.Nested('TeacherSchema')
 
     class Meta:
